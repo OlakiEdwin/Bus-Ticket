@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Ticket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        select,
+        input[type="date"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Book Ticket</h1>
+    <form onsubmit="return bookTicket()" method="post">
+        <label for="ticketNumber">Ticket Number:</label>
+            <input type="text" id="ticketNumber" name="ticketNumber" readonly>
+
+            <label for="busNumber">Bus Number:</label>
+            <input type="text" id="busNumber" name="busNumber" readonly>
+
+            <label for="seatNumber">Seat Number:</label>
+            <select id="seatNumber" name="seatNumber" required>
+                <option value="" disabled selected>Select a seat</option>
+                <option value="1A">1A</option>
+                <option value="1B">1B</option>
+                <option value="2A">2A</option>
+                <option value="2B">2B</option>
+            </select>
+
+        <label for="confirmedDate">Confirmed Date:</label>
+        <input type="date" id="confirmedDate" name="confirmedDate" required>
+
+        <label for="fromCity">From:</label>
+        <input type="text" id="fromCity" name="fromCity" required>
+
+        <label for="toCity">To:</label>
+        <input type="text" id="toCity" name="toCity" required>
+
+        <label for="fare">Fare:</label>
+        <input type="text" id="fare" name="fare" required>
+
+        <input type="submit" value="Book Ticket">
+    </form>
+
+    <script>
+        function generateTicketNumber() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let ticketNumber = "";
+
+            for (let i = 0; i < 6; i++) {
+                const randomIndex = Math.floor(Math.random() * chars.length);
+                ticketNumber += chars[randomIndex];
+            }
+
+            const timestamp = new Date().getTime().toString();
+            ticketNumber += timestamp;
+
+            return ticketNumber;
+        }
+
+        function generateBusNumber() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let busNumber = "";
+
+            for (let i = 0; i < 3; i++) {
+                const randomIndex = Math.floor(Math.random() * chars.length);
+                busNumber += chars[randomIndex];
+            }
+
+            for (let i = 0; i < 3; i++) {
+                busNumber += Math.floor(Math.random() * 10);
+            }
+
+            return busNumber;
+        }
+
+        function bookTicket() {
+            const ticketNumber = generateTicketNumber();
+            const busNumber = generateBusNumber();
+
+            document.getElementById("ticketNumber").value = ticketNumber;
+            document.getElementById("busNumber").value = busNumber;
+
+            sessionStorage.setItem("ticketNumber", ticketNumber);
+            sessionStorage.setItem("busNumber", busNumber);
+            sessionStorage.setItem("seatNumber", document.getElementById("seatNumber").value);
+            sessionStorage.setItem("confirmedDate", document.getElementById("confirmedDate").value);
+            sessionStorage.setItem("fromCity", document.getElementById("fromCity").value);
+            sessionStorage.setItem("toCity", document.getElementById("toCity").value);
+            sessionStorage.setItem("fare", document.getElementById("fare").value);
+
+            window.location.href = "ticketdetails.html";
+            return false;
+        }
+    </script>
+</body>
+</html>

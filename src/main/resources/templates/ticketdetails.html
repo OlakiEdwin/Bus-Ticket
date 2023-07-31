@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+
+        .ticket {
+            border: 2px solid #ccc;
+            padding: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+
+        .ticket img {
+            display: block;
+            margin: 10px auto;
+            max-width: 150px;
+        }
+
+        .ticket p {
+            margin: 10px 0;
+        }
+
+        .ticket-number {
+            font-weight: bold;
+            color: #ff5722;
+        }
+
+        .fare {
+            font-weight: bold;
+            color: #4caf50;
+        }
+
+        .get-ticket-btn {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .get-ticket-btn:hover {
+            background-color: #45a049;
+        }
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@barcode/JsBarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+</head>
+<body>
+    <div class="ticket">
+        <img id="barcode" alt="Barcode">
+
+        <p>Booking Details:</p>
+        <p><span class="ticket-number">Ticket Number:</span> <span id="ticketNumber"></span></p>
+        <p><span class="ticket-number">Bus Number:</span> <span id="busNumber"></span></p>
+        <p><span class="ticket-number">Seat Number:</span> <span id="seatNumber"></span></p>
+        <p><span class="ticket-number">Confirmed Date:</span> <span id="confirmedDate"></span></p>
+        <p><span class="ticket-number">From:</span> <span id="fromCity"></span></p>
+        <p><span class="ticket-number">To:</span> <span id="toCity"></span></p>
+        <p><span class="fare">Fare:</span> <span id="fare"></span></p>
+
+        <button class="get-ticket-btn" onclick="downloadTicket()">Get Ticket</button>
+    </div>
+
+    <script>
+        function generateBarcode(ticketNumber) {
+            JsBarcode("#barcode", ticketNumber, {
+                format: "CODE128",
+                displayValue: false
+            });
+        }
+
+        function displayBookingDetails() {
+            const ticketNumber = sessionStorage.getItem("ticketNumber");
+            const busNumber = sessionStorage.getItem("busNumber");
+            const seatNumber = sessionStorage.getItem("seatNumber");
+            const confirmedDate = sessionStorage.getItem("confirmedDate");
+            const fromCity = sessionStorage.getItem("fromCity");
+            const toCity = sessionStorage.getItem("toCity");
+            const fare = sessionStorage.getItem("fare");
+
+            document.getElementById("ticketNumber").innerText = ticketNumber;
+            document.getElementById("busNumber").innerText = busNumber;
+            document.getElementById("seatNumber").innerText = seatNumber;
+            document.getElementById("confirmedDate").innerText = confirmedDate;
+            document.getElementById("fromCity").innerText = fromCity;
+            document.getElementById("toCity").innerText = toCity;
+            document.getElementById("fare").innerText = fare;
+
+            generateBarcode(ticketNumber);
+        }
+
+        function downloadTicket() {
+            const ticketNumber = document.getElementById("ticketNumber").innerText;
+            const busNumber = document.getElementById("busNumber").innerText;
+            const seatNumber = document.getElementById("seatNumber").innerText;
+            const confirmedDate = document.getElementById("confirmedDate").innerText;
+            const fromCity = document.getElementById("fromCity").innerText;
+            const toCity = document.getElementById("toCity").innerText;
+            const fare = document.getElementById("fare").innerText;
+
+            const ticketDetails = `Ticket Number: ${ticketNumber}\nBus Number: ${busNumber}\nSeat Number: ${seatNumber}\nConfirmed Date: ${confirmedDate}\nFrom: ${fromCity}\nTo: ${toCity}\nFare: ${fare}`;
+
+            const pdf = new jsPDF();
+            pdf.setFontSize(12);
+            pdf.text(ticketDetails, 10, 10);
+            pdf.save("ticket.pdf");
+        }
+
+        document.addEventListener("DOMContentLoaded", displayBookingDetails);
+    </script>
+</body>
+</html>
