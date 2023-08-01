@@ -1,22 +1,23 @@
-package com.olaki.BusTicket;
+package com.olaki.BusTicket.repo;
 
-import org.springframework.stereotype.Service;
+import com.olaki.BusTicket.model.TicketDetails;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Service
-public class TicketService {
+@Repository
+public class TicketRepository {
 
     private Map<String, TicketDetails> ticketMap;
 
-    public TicketService() {
+    public TicketRepository() {
         ticketMap = new HashMap<>();
     }
 
-    public void bookTicket(TicketDetails ticketDetails) {
+    public void saveTicket(TicketDetails ticketDetails) {
         String ticketNumber = generateTicketNumber();
         ticketDetails.setTicketNumber(ticketNumber);
         ticketMap.put(ticketNumber, ticketDetails);
@@ -41,4 +42,3 @@ public class TicketService {
         return ticketNumber.toString();
     }
 }
-

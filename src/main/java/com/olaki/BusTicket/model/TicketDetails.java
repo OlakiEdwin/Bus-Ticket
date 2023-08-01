@@ -1,4 +1,4 @@
-package com.olaki.BusTicket;
+package com.olaki.BusTicket.model;
 
 public class TicketDetails {
 
