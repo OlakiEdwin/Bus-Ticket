@@ -27,6 +27,10 @@ public class TicketService {
         return new ArrayList<>(ticketMap.values());
     }
 
+    public TicketDetails getTicketByNumber(String ticketNumber) {
+        return ticketMap.get(ticketNumber);
+    }
+
     private String generateTicketNumber() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder ticketNumber = new StringBuilder();
@@ -42,4 +46,3 @@ public class TicketService {
         return ticketNumber.toString();
     }
 }
-
